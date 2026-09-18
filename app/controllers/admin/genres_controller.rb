@@ -27,6 +27,7 @@ class Admin::GenresController < ApplicationController
     else
       render :edit
     end
+  end
 
     private
 
