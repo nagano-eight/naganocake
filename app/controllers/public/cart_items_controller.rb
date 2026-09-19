@@ -2,8 +2,8 @@ class Public::CartItemsController < ApplicationController
   before_action :authenticate_customer!
 
   def index
-    @items = current_customer.first.cart_items
-    @total_price = @items.sum(&:subtotal)
+    @cart_items = current_customer.first.cart_items
+    @total_price = @cart_items.sum(&:subtotal)
   end
 
   def create
