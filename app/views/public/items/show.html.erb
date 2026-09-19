@@ -1,0 +1,21 @@
+<div>
+  <h3>ジャンル検索</h3>
+
+  <% @genres.each do |genre| %>
+    <div>
+      <%= link_to genre.name, items_path(genre_id: genre.id) %>
+    </div>
+  <% end %>
+</div>
+
+<h2>商品詳細</h2>
+
+<div>
+  <% if @item.image.attached? %>
+    <%= image_tag @item.image, size: "300x200" %>
+  <% end %>
+
+  <p>商品名：<%= @item.name %></p>
+  <p>商品説明：<%= @item.introduction %></p>
+  <p>価格：<%= @item.with_tax_price %>円（税込）</p>
+</div>
