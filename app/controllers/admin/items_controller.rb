@@ -5,7 +5,7 @@ class Admin::ItemsController < ApplicationController
 
   def new
     @item = Item.new
-    @genres = Genre.all # ジャンルのセレクトボックス用
+    @genres = Genre.all
   end
 
   def create
@@ -13,10 +13,26 @@ class Admin::ItemsController < ApplicationController
     if @item.save
       redirect_to admin_item_path(@item), notice: "商品を登録しました！"
     else
-      @genres = Genre.all # 失敗した時にもジャンル一覧が必要
+      @genres = Genre.all
       render :new
     end
   end
+
+  def edit
+    @item = Item.find(params[:id])
+    @genres = Genre.all
+  end
+
+  def update
+    @item = Item.find(params[:id])
+    if @item.update(item_params)
+      redirect_to admin_items_path(@item), notice: "商品情報を更新しました"
+    else
+      @genres = Genres.all
+      render :edit
+    end
+  end
+
 
   private
 
