@@ -3,7 +3,7 @@ class Order < ApplicationRecord
 
   validates :postal_code, :address, :name, :shipping_cost, :total_payment, :payment_method, :status, presence: true
   validates :shipping_cost, :total_payment, numericality: { greater_than_or_equal_to: 0 }
-  
+
   has_many :order_details, dependent: :destroy
 
 enum :payment_method, { credit_card: 0, transfer: 1 }

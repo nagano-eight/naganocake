@@ -11,7 +11,6 @@ class CreateOrders < ActiveRecord::Migration[8.0]
       t.integer :status, null: false, default: 0
 
 t.timestamps
-
     end
   end
 end
