@@ -1,7 +1,14 @@
 <div class="container">
   <div class="row">
-    <h2>商品一覧</h2>
-
+    <div class="row align-items-center mb-3">
+      <h2>商品一覧</h2>
+    
+      <div class="ml-auto">
+        <%= link_to new_admin_item_path, class: "btn btn-success text-white font-weight-bold", style: "width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; text-decoration: none;" do %>
+          +
+        <% end %>
+      </div>
+    </div>
 
     <table class="table">
       <thead>
