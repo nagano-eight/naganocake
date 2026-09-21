@@ -6,8 +6,15 @@ class Admin::OrdersController < ApplicationController
 
   def update
     @order = Order.find(params[:id])
-    new_status = params[:order][:status].to_i
-    if @order.update(order_params)
+    new_status = params[:order][:status]
+
+    if new_status.to_i.to_s == new_status
+      @order.status = new_status.to_i
+    else
+      @order.status = new_status
+    end
+
+    if @order.save
       flash[:notice] = "注文ステータスを更新しました。"
       redirect_to admin_order_path(@order)
     else

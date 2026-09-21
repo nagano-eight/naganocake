@@ -25,7 +25,7 @@
           <th>注文ステータス</th>
           <td>
             <%= form_with model: @order, url: admin_order_path(@order), method: :patch, local: true do |f| %>
-              <%= f.select :status, Order.statuses.map { |k, v| [Order.new(status: k).status_i18n, v] }, { selected: @order.status }, { class: "form-control-sm mr-2" } %>
+              <%= f.select :status, Order.statuses.keys.map { |k| [Order.new(status: k).status_i18n, k] }, { selected: @order.status }, { class: "form-control-sm mr-2" } %>
               <%= f.submit "更新", class: "btn btn-success btn-sm" %>
             <% end %>
           </td>
