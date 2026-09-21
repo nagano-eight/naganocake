@@ -1,0 +1,26 @@
+<div>
+  <h3>ジャンル検索</h3>
+
+  <% @genres.each do |genre| %>
+    <div>
+      <%= link_to genre.name, items_path(genre_id: genre.id) %>
+    </div>
+  <% end %>
+</div>
+
+<% if @genre.present? %>
+  <h2><%= @genre.name %>一覧（全<%= @items.count %>件）</h2>
+<% else %>
+  <h2>商品一覧（全<%= @items.count %>件）</h2>
+<% end %>
+
+<% @items.each do |item| %>
+  <div>
+    <% if item.image.attached? %>
+      <%= image_tag item.image, size: "200x150" %>
+    <% end %>
+
+    <%= link_to item.name, item_path(item) %>
+    <%= item.with_tax_price %>円（税込）
+  </div>
+<% end %>
