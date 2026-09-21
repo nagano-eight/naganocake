@@ -1,1 +1,30 @@
-<h2>管理者トップ画面（ダッシュボード）</h2>
+<div class="container">
+  <div class="row my-4">
+    <div class="col-md-10 offset-md-1">
+      <h2 class="mb-4">注文履歴一覧</h2>
+
+      <table class="table table-hover table-inverse">
+        <thead>
+          <tr>
+            <th>購入日時</th>
+            <th>購入者</th>
+            <th>注文個数</th>
+            <th>注文ステータス</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @orders.each do |order| %>
+            <tr>
+              <td>
+                <%= link_to order.created_at.strftime('%Y-%m-%d %H:%M:%S'), admin_order_path(order) %>
+              </td>
+              <td><%= order.customer.last_name %> <%= order.customer.first_name %></td>
+              <td><%= order.order_details.sum(:amount) %></td>
+              <td><%= order.status %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

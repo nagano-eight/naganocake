@@ -1,0 +1,84 @@
+<div class="container">
+  <div class="row my-4">
+    <div class="col-md-10 offset-md-1">
+      <h2 class="mb-4">注文履歴詳細</h2>
+
+      <!-- 購入者情報 -->
+      <table class="table table-borderless">
+        <tr>
+          <th style="width: 20%;">購入者</th>
+          <td><%= @order.customer.last_name %> <%= @order.customer.first_name %></td>
+        </tr>
+        <tr>
+          <th>注文日</th>
+          <td><%= @order.created_at.strftime('%Y-%m-%d') %></td>
+        </tr>
+        <tr>
+          <th>配送先</th>
+          <td>〒<%= @order.postal_code %> <%= @order.address %></td>
+        </tr>
+        <tr>
+          <th>支払方法</th>
+          <td><%= @order.payment_method_i18n %></td>
+        </tr>
+        <tr>
+          <th>注文ステータス</th>
+          <td>
+            <%= form_with model: @order, url: admin_order_path(@order), method: :patch, local: true do |f| %>
+              <%= f.select :status, Order.statuses.keys.map { |k| [I18n.t("enums.order.status.#{k}"), k] }, {}, { class: "form-control-sm mr-2" } %>
+              <%= f.submit "更新", class: "btn btn-success btn-sm" %>
+            <% end %>
+          </td>
+        </tr>
+      </table>
+
+      <!-- 注文商品の一覧 -->
+      <table class="table mt-4">
+        <thead>
+          <tr>
+            <th>商品名</th>
+            <th>単価（税込）</th>
+            <th>数量</th>
+            <th>小計</th>
+            <th>製作ステータス</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @order_details.each do |order_detail| %>
+            <tr>
+              <td><%= order_detail.item.name %></td>
+              <td><%= order_detail.price.to_s(:delimited) %>円</td>
+              <td><%= order_detail.amount %></td>
+              <td><%= (order_detail.price * order_detail.amount).to_s(:delimited) %>円</td>
+              <td>
+                <!-- 製作ステータスの更新フォームなど -->
+                <%= order_detail.making_status_i18n %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <!-- 請求金額など -->
+      <div class="row justify-content-end mt-4">
+        <div class="col-md-5">
+          <table class="table table-borderless">
+            <tr>
+              <th>商品合計</th>
+              <td><%= (@order.total_payment - @order.shipping_cost).to_s(:delimited) %>円</td>
+            </tr>
+            <tr>
+              <th>送料</th>
+              <td><%= @order.shipping_cost.to_s(:delimited) %>円</td>
+            </tr>
+            <tr class="font-weight-bold">
+              <th>請求金額合計</th>
+              <td><%= @order.total_payment.to_s(:delimited) %>円</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
