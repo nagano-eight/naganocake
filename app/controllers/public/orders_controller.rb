@@ -1,5 +1,4 @@
 class Public::OrdersController < ApplicationController
-
   def new
     @order = Order.new
   end
@@ -8,7 +7,7 @@ class Public::OrdersController < ApplicationController
     @order = Order.find(order_params)
     @cart_items = current_customer.cart_items
     @total_payment = @cart_items.sum(&:subtotal)
-    case params[:order][:address_option] 
+    case params[:order][:address_option]
     when "0"
       @order.postal_code = current_customer.postal_code
       @order.address = current_customer.address
@@ -47,9 +46,8 @@ class Public::OrdersController < ApplicationController
   end
 
   private
-  
+
   def order_params
     params.require(:order).permit(:postal_code, :address, :name, :shipping_cost, :total_payment, :payment_method, :status, :created_at, :update_at)
   end
-
 end
