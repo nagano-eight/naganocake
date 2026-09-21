@@ -60,13 +60,15 @@
         margin-top: 20px;
         margin-bottom: 40px;
     }
+    .shopping-to {
+        margin-top: 25px;
+    }
     .price-table {
         border-collapse: collapse;
         min-width: 200px;
     }
     .price-table th, .price-table td {
         border: 1px solid #aaaaaa !important;
-        padding: 12px 20px;
     }
     .price-table th {
         background-color: #ededed;
@@ -87,9 +89,9 @@
             <thead>
                 <tr>
                     <th>商品名</th>
-                    <th>単価(税込)</th>
-                    <th>数量</th>
-                    <th>小計</th>
+                    <th style="width: 150px;">単価(税込)</th>
+                    <th style="width: 150px;">数量</th>
+                    <th style="width: 150px;">小計</th>
                     <th></th>
                 </tr>
             </thead>
@@ -97,15 +99,15 @@
                 <% @cart_items.each do |cart_item| %>
                     <tr>
                         <td><%= cart_item.item_name %></td>
-                        <td><%= cart_item.item_price.to_fs(:delimited) if cart_item.item.present? %></td>
-                        <td>
+                        <td style="with: 100px;"><%= cart_item.item_price.to_fs(:delimited) if cart_item.item.present? %></td>
+                        <td style="width: 150px;">
                             <% form_with model: cart_item, url: public_cart_item_path(cart_item), method: :path, local: true do |f| %>
                                 <%= f.select :amount, options_for_select((1..10).to_a, cart_item.amount) %>
                                 <%= button_to "変更", "#", class: "custom-btn btn-green" %>
                             <% end %>
                         </td>
-                        <td><%= items.subtotal.to_fs(:delimited) if cart_item.respond_to?(:subtotal) %></td>
-                        <td><%= button_to "削除する", public_cart_item_path(carcart_item), data: { turbo_method: :delete }, class: "custom-btn btn-red btn-sm" %></td>
+                        <td style="width: 150px;"><%= items.subtotal.to_fs(:delimited) if cart_item.respond_to?(:subtotal) %></td>
+                        <td style="width: 150px;"><%= button_to "削除する", public_cart_item_path(carcart_item), data: { turbo_method: :delete }, class: "custom-btn btn-red btn-sm" %></td>
                     </tr>
                 <% end %>
             </tbody>
@@ -113,15 +115,19 @@
     </div>
 
     <div class="cart-footer">
-        <div>
+        <div class="shopping-to">
             <%= button_to "買い物を続ける", "#", class: "custom-btn btn-blue" %>
         </div>
         <div class="price-table">
             <table class="price-table">
-                <th>合計金額</th>
-                <td>
-                    <p><%= @total_price.to_fs(:delimited) %></p>
-                </td>
+                <tbody>
+                    <tr>
+                        <th style="width: 100px; height: 40px;">合計金額</th>
+                        <td style="width: 100px; height: 40px;">
+                            <p><%= @total_price.to_fs(:delimited) %></p>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
