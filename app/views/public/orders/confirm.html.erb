@@ -1,7 +1,70 @@
-<div>
+<style>
+    .orders-confirm-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 20px 40px;
+    }
+    h3 {
+        display: inline-block;
+        background-color: #ededed;
+        margin-left: 80px;
+        padding: 0 20px;
+    }
+    .flex-container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+    table {
+        border-collapse: collapse;
+    }
+    th {
+        background-color: #ededed;
+    }
+    th, td {
+        border: 2px solid #777;
+        padding: 5px;
+        text-align: left;
+    }
+    .product-table {
+        width: 65%;
+    }
+    .price-table {
+        width: 30%;
+    }
+    .select-payment {
+        margin-bottom: 30px;
+    }
+    .select-address {
+        margin-bottom: 15px;
+    }
+    .action-area {
+        text-align: center;
+        margin: 40px auto;
+    }
+    .custom-btn {
+        display: inline-block;
+        background-color: transparent;
+        color: #ffffff;
+        border: none !important;
+        font-weight: bold;
+        border-radius: 4px;
+        cursor: pointer;        
+    }
+    .btn-green {
+        font-size: 16px;
+        background-color: #28a745;
+        padding: 5px 16px;
+    }
+    strong {
+        padding-right: 20px;
+    }
+</style>
+
+<div class="orders-confirm-container">
     <h3>注文情報確認</h3>
-    <div>
-        <table>
+    <div class="flex-container">
+        <table class="product-table">
             <thead>                
                 <tr>
                     <th>商品名</th>
@@ -11,37 +74,42 @@
                 </tr>                
             </thead>
             <tbody>
-                <% @orders.each do |order| %>
-                    <tr>
-                        <td><%= order.item.name %></td>
+                <tr>
+                    <% @orders.each do |order| %>
+                        <td><%= order.item_id %></td>
                         <td><%= order.price %></td>
                         <td><%= order.amount %></td>
                         <td><%= order.subtotal %></td>
-                    </tr>
-                <% end %>
+                    <% end %>
+                </tr>
             </tbody>
         </table>
-    </div>
-    <div>
-        <table>
+        <table class="price-table">
             <tbody>
                 <tr>
                     <th>送料</th>
-                    <th>商品合計</th>
-                    <th>請求金額</th>
                     <td>800</td>
-                    <td></td>
-                    <td></td>
+                </tr>
+                <tr>
+                    <th>商品合計</th>
+                    <td><%= @order.subtotal %></td>
+                </tr>
+                <tr>
+                    <th>請求金額</th>
+                    <td><%= @order.total_payment %></td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <div>
+    <div class="select-payment">
         <strong>支払方法</strong>
     </div>
 
-    <div>
-        <strong>お届け先</strong>〒
+    <div class="select-address">
+        <strong>お届け先</strong>〒<%= @order.postal_code, style: "padding-right: 10px" %><%= @order.address %><br>
+                                  <%= @order.name %>
     </div>
-    
+    <div class="action-area">
+        <%= button_to "注文を確定する", thanks_orders_path, method: :post, class: "custom-btn btn-green" %>
+    </div>
 </div>
