@@ -7,10 +7,10 @@ class ApplicationController < ActionController::Base
   private
 
   def set_layout
-    if self.class.name.start_with?('Admin::')
-      'admin'
+    if self.class.name.start_with?("Admin::")
+      "admin"
     else
-      'application'
+      "application"
     end
   end
 end
