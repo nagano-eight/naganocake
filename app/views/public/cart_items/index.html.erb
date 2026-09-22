@@ -5,8 +5,12 @@
         padding: 20px 40px;
     }
     .cart-title {
+        display: inline-block;
+        background-color: #ededed;
+        margin-left: 10px;
         margin-bottom: 20px;
-        font-size: 24px;
+        padding: 0 20px;
+        font-size: 20px;
     }
     .clear-cart-area {
         display: flex;
@@ -34,9 +38,19 @@
         padding: 5px 10px;
         cursor: pointer;
     }
-    .btn-red { background-color: #df4759 !important; }
-    .btn-blue { background-color: #007bff !important; }
-    .btn-green { background-color: #28a745 !important; }
+    .btn-red {
+        background-color: #df4759 !important;
+        padding: 5px 10px;
+    }
+    .btn-blue {
+        background-color: #007bff !important;
+        padding: 5px 15px;
+    }
+    .btn-green { 
+        font-size: 16px;
+        background-color: #28a745 !important;
+        padding: 10px 24px;
+    }
     .btn-sm { padding: 4px 10px; font-size: 12px; }
     .cart-table {
         width: 100%;
@@ -61,13 +75,15 @@
         margin-bottom: 40px;
     }
     .shopping-to {
-        margin-top: 25px;
+        margin-top: 15px;
+        margin-left: 25px;
     }
     .price-table {
         border-collapse: collapse;
         min-width: 200px;
     }
     .price-table th, .price-table td {
+        width: 20px;
         border: 1px solid #aaaaaa !important;
     }
     .price-table th {
@@ -82,32 +98,32 @@
 <div class="cart-container">
     <h3 class="cart-title">ショッピングカート</h3>
     <div class="clear-cart-area">
-        <%= button_to "カートを空にする", "#", class: "custom-btn btn-red" %>
+        <%= button_to "カートを空にする", destroy_all_cart_items_path, method: :delete, data: { confirm: "本当に削除しますか？" }, class: "custom-btn btn-red" %>
     </div>
     <div>
         <table class="cart-table">
             <thead>
                 <tr>
                     <th>商品名</th>
-                    <th style="width: 150px;">単価(税込)</th>
-                    <th style="width: 150px;">数量</th>
-                    <th style="width: 150px;">小計</th>
-                    <th></th>
+                    <th style="width: 100px;">単価(税込)</th>
+                    <th style="width: 100px;">数量</th>
+                    <th style="width: 100px;">小計</th>
+                    <th style="width: 100px;"></th>
                 </tr>
             </thead>
             <tbody>
                 <% @cart_items.each do |cart_item| %>
                     <tr>
                         <td><%= cart_item.item_name %></td>
-                        <td style="with: 100px;"><%= cart_item.item_price.to_fs(:delimited) if cart_item.item.present? %></td>
-                        <td style="width: 150px;">
+                        <td style="with: 100px;"><%= cart_item.item.with_tax_price.to_fs(:delimited) if cart_item.item.present? %></td>
+                        <td style="width: 100px;">
                             <% form_with model: cart_item, url: public_cart_item_path(cart_item), method: :path, local: true do |f| %>
                                 <%= f.select :amount, options_for_select((1..10).to_a, cart_item.amount) %>
-                                <%= button_to "変更", "#", class: "custom-btn btn-green" %>
+                                <%= f.submit "変更", class: "custom-btn btn-green" %>
                             <% end %>
                         </td>
-                        <td style="width: 150px;"><%= items.subtotal.to_fs(:delimited) if cart_item.respond_to?(:subtotal) %></td>
-                        <td style="width: 150px;"><%= button_to "削除する", public_cart_item_path(carcart_item), data: { turbo_method: :delete }, class: "custom-btn btn-red btn-sm" %></td>
+                        <td style="width: 100px;"><%= items.subtotal.to_fs(:delimited) if cart_item.respond_to?(:subtotal) %></td>
+                        <td style="width: 100px;"><%= button_to "削除する", public_cart_item_path(carcart_item), data: { turbo_method: :delete }, class: "custom-btn btn-red btn-sm" %></td>
                     </tr>
                 <% end %>
             </tbody>
@@ -122,9 +138,9 @@
             <table class="price-table">
                 <tbody>
                     <tr>
-                        <th style="width: 100px; height: 40px;">合計金額</th>
-                        <td style="width: 100px; height: 40px;">
-                            <p><%= @total_price.to_fs(:delimited) %></p>
+                        <th>合計金額</th>
+                        <td>
+                            <p><%= @cart_items.sum(&:subtotal).to_fs(:delimited) %></p>
                         </td>
                     </tr>
                 </tbody>

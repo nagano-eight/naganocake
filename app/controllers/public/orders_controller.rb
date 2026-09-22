@@ -1,13 +1,15 @@
 class Public::OrdersController < ApplicationController
+  #before_action :authenticate_customer!
 
   def new
     @order = Order.new
   end
 
   def confirm
-    @order = Order.find(order_params)
+    @order = Order.new
     @cart_items = current_customer.cart_items
     @total_payment = @cart_items.sum(&:subtotal)
+    @order.payment_method = order_params[:payment_method]
     case params[:order][:address_option] 
     when "0"
       @order.postal_code = current_customer.postal_code
@@ -22,10 +24,10 @@ class Public::OrdersController < ApplicationController
       if @order.postal_code.blank? || @order.address.blank? || @order.name.blank?
         flash.now[:alert] = "新しいお届け先を入力してください。"
         @address = current_customer.addresses
-        render :new, statsus: :unprocessable_entity and return
+        render :new, status: :unprocessable_entity
       end
 
-      if @order.inbalid?
+      if @order.invalid?
         @addresses = current_customer.address
         render :new, status: :unprocessable_entity
       end
@@ -33,17 +35,9 @@ class Public::OrdersController < ApplicationController
   end
 
   def create
-    @order = order.new
+    @order = Order.new(order_params)
     @order.save
-    redirect_to orders_path
-  end
-
-  def index
-    @orders = Order.all
-  end
-
-  def show
-    @order = Order.find(current_user.id)
+    redirect_to thanks_orders_path
   end
 
   private
