@@ -32,7 +32,7 @@
         </tr>
       </table>
 
-      <table class="table mt-4">
+      <table class="table">
         <thead>
           <tr>
             <th>商品名</th>
@@ -40,43 +40,26 @@
             <th>数量</th>
             <th>小計</th>
             <th>製作ステータス</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
-          <% @order_details.each do |order_detail| %>
+          <% @order.order_details.each do |order_detail| %>
             <tr>
               <td><%= order_detail.item.name %></td>
-              <td><%= order_detail.price.to_s(:delimited) %>円</td>
+              <td><%= order_detail.price %></td>
               <td><%= order_detail.amount %></td>
-              <td><%= (order_detail.price * order_detail.amount).to_s(:delimited) %>円</td>
+              <td><%= order_detail.price * order_detail.amount %></td>
               <td>
-                <%= order_detail.making_status_i18n %>
+                <%= form_with model: [:admin, order_detail], local: true do |f| %>
+                  <%= f.select :making_status, OrderDetail.making_statuses.keys.map { |k| [OrderDetail.new(making_status: k).making_status_i18n, k] }, {}, { class: "form-control-sm mr-2" } %>
+                  <%= f.submit "更新", class: "btn btn-success btn-sm" %>
+                <% end %>
               </td>
             </tr>
           <% end %>
         </tbody>
       </table>
-
-      <!-- 請求金額など -->
-      <div class="row justify-content-end mt-4">
-        <div class="col-md-5">
-          <table class="table table-borderless">
-            <tr>
-              <th>商品合計</th>
-              <td><%= number_with_delimiter(@order.total_payment - @order.shipping_cost) %>円</td>
-            </tr>
-            <tr>
-              <th>送料</th>
-              <td><%= number_with_delimiter(@order.shipping_cost) %>円</td>
-            </tr>
-            <tr class="font-weight-bold">
-              <th>請求金額合計</th>
-              <td><%= number_with_delimiter(@order.total_payment) %>円</td>
-            </tr>
-          </table>
-        </div>
-      </div>
-
     </div>
   </div>
 </div>
