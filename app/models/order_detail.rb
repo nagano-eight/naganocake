@@ -16,5 +16,4 @@ class OrderDetail < ApplicationRecord
     when "production_complete" then "製作完了"
     end
   end
-
 end

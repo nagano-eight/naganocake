@@ -5,8 +5,12 @@
 
       <table>
         <tr>
-          <th style="width: 20%;">購入者</th>
-          <td><%= @order.customer.last_name %> <%= @order.customer.first_name %></td>
+          <th>購入者</th>
+          <td>
+            <%= link_to admin_customer_path(@order.customer) do %>
+              <%= @order.customer.last_name %><%= @order.customer.first_name %>
+            <% end %>
+          </td>
         </tr>
         <tr>
           <th>注文日</th>
