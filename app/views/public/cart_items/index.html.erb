@@ -1,0 +1,131 @@
+<style>
+    .cart-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 20px 40px;
+    }
+    .cart-title {
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
+    .clear-cart-area {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 15px;
+    }
+    .custom-btn {
+        display: inline-block;
+        padding: 6px 16px;
+        font-size: 14px;
+        font-weight: bold;
+        color: #ffffff !import;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .custom-btn,
+    .custom-btn input [type="submit"],
+    .custom-btn button {
+        background-color: transparent;
+        background: none !important;
+        border: none !important;
+        color: #ffffff !important;
+        font-weight: bold;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+    .btn-red { background-color: #df4759 !important; }
+    .btn-blue { background-color: #007bff !important; }
+    .btn-green { background-color: #28a745 !important; }
+    .btn-sm { padding: 4px 10px; font-size: 12px; }
+    .cart-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .cart-table th, .cart-table td {
+        border: 1px solid #aaaaaa !important;
+        padding: 12px;
+        text-align: left;
+        vertical-align: middle;
+    }
+    .cart-table th {
+        background-color: #ededed !important;
+    }
+    .cart-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-top: 20px;
+        margin-bottom: 40px;
+    }
+    .price-table {
+        border-collapse: collapse;
+        min-width: 200px;
+    }
+    .price-table th, .price-table td {
+        border: 1px solid #aaaaaa !important;
+        padding: 12px 20px;
+    }
+    .price-table th {
+        background-color: #ededed;
+    }
+    .action-area {
+        text-align: center;
+        margin-top: 40px;
+        margin-bottom: 60px;
+    }
+</style>
+<div class="cart-container">
+    <h3 class="cart-title">ショッピングカート</h3>
+    <div class="clear-cart-area">
+        <%= button_to "カートを空にする", "#", class: "custom-btn btn-red" %>
+    </div>
+    <div>
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>商品名</th>
+                    <th>単価(税込)</th>
+                    <th>数量</th>
+                    <th>小計</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% @cart_items.each do |cart_item| %>
+                    <tr>
+                        <td><%= cart_item.item_name %></td>
+                        <td><%= cart_item.item_price.to_fs(:delimited) if cart_item.item.present? %></td>
+                        <td>
+                            <% form_with model: cart_item, url: public_cart_item_path(cart_item), method: :path, local: true do |f| %>
+                                <%= f.select :amount, options_for_select((1..10).to_a, cart_item.amount) %>
+                                <%= button_to "変更", "#", class: "custom-btn btn-green" %>
+                            <% end %>
+                        </td>
+                        <td><%= items.subtotal.to_fs(:delimited) if cart_item.respond_to?(:subtotal) %></td>
+                        <td><%= button_to "削除する", public_cart_item_path(carcart_item), data: { turbo_method: :delete }, class: "custom-btn btn-red btn-sm" %></td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="cart-footer">
+        <div>
+            <%= button_to "買い物を続ける", "#", class: "custom-btn btn-blue" %>
+        </div>
+        <div class="price-table">
+            <table class="price-table">
+                <th>合計金額</th>
+                <td>
+                    <p><%= @total_price.to_fs(:delimited) %></p>
+                </td>
+            </table>
+        </div>
+    </div>
+    <div class="action-area">
+        <%= button_to "情報入力に進む", "public_orders_path", class: "custom-btn btn-green" %>
+    </div>
+</div>
