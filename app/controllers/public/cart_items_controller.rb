@@ -7,12 +7,6 @@ class Public::CartItemsController < ApplicationController
   def create
   end
 
-  def update
-  end
-
-  def destroy
-  end
-
   private
 
   def cart_item_params
