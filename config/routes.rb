@@ -33,8 +33,8 @@ Rails.application.routes.draw do
 
     resources :orders, only: [ :new, :create, :index, :show ] do
       collection do
-        post 'confirm'
-        get 'confirm'
+        post "confirm"
+        get "confirm"
         get :thanks
       end
     end
