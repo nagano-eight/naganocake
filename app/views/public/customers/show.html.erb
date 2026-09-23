@@ -34,4 +34,14 @@
  </tr>
  </table>
 
- <%= link_to "編集する", edit_customers_information_path, class: "btn btn-success" %>
+<%= link_to "編集する",
+            edit_customers_information_path,
+            class: "btn btn-success" %>
+
+<%= link_to "注文履歴一覧",
+            orders_path,
+            class: "btn btn-primary" %>
+
+<%= link_to "配送先一覧",
+            addresses_path,
+            class: "btn btn-primary" %>
