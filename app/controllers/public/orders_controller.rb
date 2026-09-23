@@ -1,13 +1,15 @@
 class Public::OrdersController < ApplicationController
+
   def new
     @order = Order.new
   end
 
-  def confirm
-    @order = Order.find(order_params)
+ def confirm
+    @order = Order.new(order_params)
+    binding.pry
     @cart_items = current_customer.cart_items
     @total_payment = @cart_items.sum(&:subtotal)
-    case params[:order][:address_option]
+
     when "0"
       @order.postal_code = current_customer.postal_code
       @order.address = current_customer.address
@@ -21,33 +23,30 @@ class Public::OrdersController < ApplicationController
       if @order.postal_code.blank? || @order.address.blank? || @order.name.blank?
         flash.now[:alert] = "新しいお届け先を入力してください。"
         @address = current_customer.addresses
-        render :new, statsus: :unprocessable_entity and return
+        render :new, status: :unprocessable_entity
       end
 
-      if @order.inbalid?
-        @addresses = current_customer.address
+      if @order.invalid?
+        @addresses = current_customer.addresses
         render :new, status: :unprocessable_entity
       end
     end
   end
 
   def create
-    @order = order.new
+    @order = Order.new(order_params)
     @order.save
-    redirect_to orders_path
+    redirect_to thanks_orders_path
   end
 
-  def index
-    @orders = Order.all
-  end
-
-  def show
-    @order = Order.find(current_user.id)
+  def destroy_all
+    current_customer.cart_items.destroy_all
+    redirect_to cart_items_path
   end
 
   private
 
   def order_params
-    params.require(:order).permit(:postal_code, :address, :name, :shipping_cost, :total_payment, :payment_method, :status, :created_at, :update_at)
+    params.require(:order).permit(:payment_method, :postal_code, :address, :name)
   end
 end

@@ -64,3 +64,4 @@ end
 
 gem "devise", "~> 5.0"
 gem "json", "2.21.2"
+gem "enum_help"
