@@ -140,7 +140,7 @@
                     <tr>
                         <th>合計金額</th>
                         <td>
-                            <p><%= @cart_items.sum(&:subtotal + 800).to_fs(:delimited) %></p>
+                            <p><%= @total_payment.to_fs(:delimited) %></p>
                         </td>
                     </tr>
                 </tbody>

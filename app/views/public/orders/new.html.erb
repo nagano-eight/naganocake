@@ -52,7 +52,7 @@
             <%= f.label :postal_code, "郵便番号(ハイフンなし)" %>
             <%= f.text_field :postal_code %><br>
             <%= f.label :address, "住所" %>
-            <%= f.text_field :address, class: "form-control" %><br>
+            <%= f.text_field :address, maxlength: 72, class: "form-control" %><br>
             <%= f.label :name, "宛名" %>
             <%= f.text_field :name %>
         </div>

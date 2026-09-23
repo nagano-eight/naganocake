@@ -1,9 +1,13 @@
 class Public::OrdersController < ApplicationController
   
-  before_action :authenticate_customer!
+  before_action :authenticate_customer! 
   
   def new
     @order = Order.new
+  end
+
+  def index
+    @orders = Order.all  
   end
 
  def confirm
@@ -34,6 +38,11 @@ class Public::OrdersController < ApplicationController
         render :new, status: :unprocessable_entity
       end
     end
+  end
+
+  def show
+    @orders = Order.all
+    @order = Order.find(order_params)
   end
 
   def create
