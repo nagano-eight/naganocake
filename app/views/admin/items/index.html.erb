@@ -1,0 +1,45 @@
+<div class="container">
+  <div class="row">
+    <div class="row align-items-center mb-3">
+      <h2>商品一覧</h2>
+    
+      <div class="ml-auto">
+        <%= link_to new_admin_item_path, class: "btn btn-success font-weight-bold", style: "width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; font-size: 30px; text-decoration: none;" do %>
+          +
+        <% end %>
+      </div>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>商品ID</th>
+          <th>商品名</th>
+          <th>税抜価格</th>
+          <th>ジャンル</th>
+          <th>ステータス</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @items.each do |item| %>
+          <tr>
+            <td><%= item.id %></td>
+            <td>
+              
+              <%= link_to item.name, admin_item_path(item) %>
+            </td>
+            <td><%= item.price %>円</td>
+            <td><%= item.genre.name %></td>
+            <td>
+              <% if item.is_active? %>
+                <span class="text-success">販売中</span>
+              <% else %>
+                <span class="text-secondary">販売停止中</span>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
