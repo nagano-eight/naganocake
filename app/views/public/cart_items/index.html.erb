@@ -122,8 +122,8 @@
                                 <%= f.submit "変更", class: "custom-btn btn-green" %>
                             <% end %>
                         </td>
-                        <td style="width: 100px;"><%= items.subtotal.to_fs(:delimited) if cart_item.respond_to?(:subtotal) %></td>
-                        <td style="width: 100px;"><%= button_to "削除する", public_cart_item_path(carcart_item), data: { turbo_method: :delete }, class: "custom-btn btn-red btn-sm" %></td>
+                        <td style="width: 100px;"><%= number_with_delimiter(cart_item.subtotal) if cart_item.respond_to?(:subtotal) %></td>
+                        <td style="width: 100px;"><%= button_to "削除する", public_cart_item_path(cart_item), data: { turbo_method: :delete }, class: "custom-btn btn-red btn-sm" %></td>
                     </tr>
                 <% end %>
             </tbody>
