@@ -1,0 +1,17 @@
+<h2>ログイン</h2>
+
+<%= form_with model: resource,url: customer_session_path do |f| %>
+  <div>
+     <%= f.label :email, "メールアドレス" %>
+     <%= f.email_field :email, autofoucus: true, autocomplete: "email" %>
+  </div>
+
+  <div>
+     <%= f.label :password, "パスワード" %>
+     <%= f.password_field :password,  autocomplete: "current-password" %>
+  </div>
+
+  <div>
+    <%= f.submit "ログイン" %>
+  </div>
+<% end %>

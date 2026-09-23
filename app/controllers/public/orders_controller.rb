@@ -1,6 +1,7 @@
 class Public::OrdersController < ApplicationController
-  before_action :authenticate_customer!, except: [:new, :confirm, :thanks]
-
+  
+  before_action :authenticate_customer!
+  
   def new
     @order = Order.new
   end
@@ -47,9 +48,8 @@ class Public::OrdersController < ApplicationController
   end
 
   private
-  
+
   def order_params
     params.require(:order).permit(:payment_method, :postal_code, :address, :name)
   end
-
 end
