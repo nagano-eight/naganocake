@@ -27,7 +27,7 @@
 </style>
 
 <div class="orders-container">
-    <%= form_with model: @order, url: confirm_orders_path, method: :post do |f| %>
+    <% form_with model: @order, url: confirm_orders_path, method: :post do |f| %>
 
         <h3 class="order-input">注文情報入力</h3>
 
