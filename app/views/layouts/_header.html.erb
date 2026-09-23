@@ -1,26 +1,28 @@
 <header class="shadow-sm">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-      <%= link_to "ながのCAKE", root_path, class: "navbar-brand" %>
-      
+      <%= link_to root_path, class: "navbar-brand" do %>
+        <%= image_tag "logo.PNG", alt: "ながのCAKE", height: "70" %>
+      <% end %>
 
       <div class="collapse navbar-collapse">
-        <ul class="navbar-nav ml-auto">
+        <% if customer_signed_in? %>
+          <span class="navbar-text mx-auto">
+            ようこそ、<%= current_customer.last_name %>さん！
+          </span>
+        <% end %>
+
+        <ul class="navbar-nav <%= customer_signed_in? ? '' : 'ms-auto' %>">
           <% if customer_signed_in? %>
-            <li class="nav-item">
-              <span class="navbar-text mr-3">
-                ようこそ、<%= current_customer.last_name %>さん！
-              </span>
-            </li>
-            <li class="nav-item"><%= link_to "マイページ", customers_my_page_path, class: "btn btn-outline-secondary btn-sm mr-2" %></li>
-            <li class="nav-item"><%= link_to "商品一覧", items_path, class: "nav-link text-dark" %></li>
-            <li class="nav-item"><%= link_to "カート", cart_items_path, class: "nav-link text-dark" %></li>
-            <li class="nav-item"><%= link_to "ログアウト", destroy_customer_session_path, data: { turbo_method: :delete }, class: "nav-link text-dark" %></li>
+            <li class="nav-item"><%= link_to "マイページ", customers_my_page_path, class: "btn btn-outline-secondary btn-sm me-2" %></li>
+            <li class="nav-item"><%= link_to "商品一覧", items_path, class: "btn btn-outline-secondary btn-sm me-2" %></li>
+            <li class="nav-item"><%= link_to "カート", cart_items_path, class: "btn btn-outline-secondary btn-sm me-2" %></li>
+            <li class="nav-item"><%= link_to "ログアウト", destroy_customer_session_path, data: { turbo_method: :delete }, class: "btn btn-outline-secondary btn-sm" %></li>
           <% else %>
-            <li class="nav-item"><%= link_to "About", about_path, class: "nav-link text-dark" %></li>
-            <li class="nav-item"><%= link_to "商品一覧", items_path, class: "nav-link text-dark" %></li>
-            <li class="nav-item"><%= link_to "新規登録", new_customer_registration_path, class: "nav-link text-dark" %></li>
-            <li class="nav-item"><%= link_to "ログイン", new_customer_session_path, class: "nav-link text-dark" %></li>
+            <li class="nav-item"><%= link_to "About", about_path, class: "btn btn-outline-secondary btn-sm me-2" %></li>
+            <li class="nav-item"><%= link_to "商品一覧", items_path, class: "btn btn-outline-secondary btn-sm me-2" %></li>
+            <li class="nav-item"><%= link_to "新規登録", new_customer_registration_path, class: "btn btn-outline-secondary btn-sm me-2" %></li>
+            <li class="nav-item"><%= link_to "ログイン", new_customer_session_path, class: "btn btn-outline-secondary btn-sm" %></li>
           <% end %>
         </ul>
       </div>
