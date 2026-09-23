@@ -114,16 +114,16 @@
             <tbody>
                 <% @cart_items.each do |cart_item| %>
                     <tr>
-                        <td><%= cart_item.item_name %></td>
+                        <td><%= cart_item.item.name %></td>
                         <td style="with: 100px;"><%= cart_item.item.with_tax_price.to_fs(:delimited) if cart_item.item.present? %></td>
                         <td style="width: 100px;">
-                            <% form_with model: cart_item, url: public_cart_item_path(cart_item), method: :path, local: true do |f| %>
+                            <% form_with model: cart_item, url: cart_item_path(cart_item), method: :path, local: true do |f| %>
                                 <%= f.select :amount, options_for_select((1..10).to_a, cart_item.amount) %>
                                 <%= f.submit "変更", class: "custom-btn btn-green" %>
                             <% end %>
                         </td>
-                        <td style="width: 100px;"><%= items.subtotal.to_fs(:delimited) if cart_item.respond_to?(:subtotal) %></td>
-                        <td style="width: 100px;"><%= button_to "削除する", public_cart_item_path(carcart_item), data: { turbo_method: :delete }, class: "custom-btn btn-red btn-sm" %></td>
+                        <td style="width: 100px;"><%= number_with_delimiter(cart_item.subtotal) if cart_item.respond_to?(:subtotal) %></td>
+                        <td style="width: 100px;"><%= button_to "削除する", cart_item_path(cart_item), data: { turbo_method: :delete }, class: "custom-btn btn-red btn-sm" %></td>
                     </tr>
                 <% end %>
             </tbody>
@@ -132,7 +132,7 @@
 
     <div class="cart-footer">
         <div class="shopping-to">
-            <%= button_to "買い物を続ける", "#", class: "custom-btn btn-blue" %>
+            <%= button_to "買い物を続ける", root_path, class: "custom-btn btn-blue" %>
         </div>
         <div class="price-table">
             <table class="price-table">
@@ -140,7 +140,7 @@
                     <tr>
                         <th>合計金額</th>
                         <td>
-                            <p><%= @total_payment.to_fs(:delimited) %></p>
+                            <p><%= number_with_delimiter(@total_payment) %></p>
                         </td>
                     </tr>
                 </tbody>
@@ -148,6 +148,6 @@
         </div>
     </div>
     <div class="action-area">
-        <%= button_to "情報入力に進む", "public_orders_path", class: "custom-btn btn-green" %>
+        <%= button_to "情報入力に進む", orders_path, class: "custom-btn btn-green" %>
     </div>
 </div>
