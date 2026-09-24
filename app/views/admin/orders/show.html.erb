@@ -1,7 +1,7 @@
 <div class="container">
-  <div class="row my-4">
-    <div class="col-md-10 offset-md-1">
-      <h2 class="mb-4">注文履歴詳細</h2>
+  <div class="row mb-4">
+    <div class="col-md-9 offset-md-1">
+      <h4 class="bg-light px-3 py-2 d-inline-block font-weight-bold mb-4">注文履歴詳細</h4>
 
       <table>
         <tr>
@@ -14,7 +14,7 @@
         </tr>
         <tr>
           <th>注文日</th>
-          <td><%= @order.created_at.strftime('%Y-%m-%d') %></td>
+          <td><%= @order.created_at.strftime('%Y/%m/%d') %></td>
         </tr>
         <tr>
           <th>配送先</th>
@@ -35,50 +35,52 @@
         </tr>
       </table>
 
-      <table>
-        <thead>
-          <tr>
-            <th>商品名</th>
-            <th>単価（税込）</th>
-            <th>数量</th>
-            <th>小計</th>
-            <th>製作ステータス</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @order.order_details.each do |order_detail| %>
+      <div class="d-flex align-items-start gap-4">
+        <table class="table mt-3">
+          <thead class="table-light">
             <tr>
-              <td><%= order_detail.item.name %></td>
-              <td><%= order_detail.price %></td>
-              <td><%= order_detail.amount %></td>
-              <td><%= order_detail.price * order_detail.amount %></td>
-              <td>
-                <%= form_with model: [:admin, order_detail], local: true do |f| %>
-                  <%= f.select :making_status, OrderDetail.making_statuses.keys.map { |k| [OrderDetail.new(making_status: k).making_status_i18n, k] }, {}, { class: "form-control-sm mr-2" } %>
-                  <%= f.submit "更新", class: "btn btn-success btn-sm" %>
-                <% end %>
-              </td>
+              <th>商品名</th>
+              <th>単価（税込）</th>
+              <th>数量</th>
+              <th>小計</th>
+              <th>製作ステータス</th>
+              <th></th>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-    <div>
-      <table>
-        <tr>
-          <th>商品合計</th>
-          <td><%= number_with_delimiter(@order.order_details.sum { |detail| detail.price * detail.amount }) %>円</td>
-        </tr>
-        <tr>
-          <th>送料</th>
-            <td><%= number_with_delimiter(@order.shipping_cost) %>円</td>
-          </tr>
-        <tr>
-          <th><strong>請求金額合計</strong></th>
-          <td><strong><%= number_with_delimiter(@order.order_details.sum { |detail| detail.price * detail.amount } + @order.shipping_cost) %>円</strong></td>
-        </tr>
-      </table>
+          </thead>
+          <tbody>
+            <% @order.order_details.each do |order_detail| %>
+              <tr>
+                <td><%= order_detail.item.name %></td>
+                <td><%= number_with_delimiter(order_detail.price) %></td>
+                <td><%= order_detail.amount %></td>
+                <td><%= number_with_delimiter(order_detail.price * order_detail.amount) %></td>
+                <td>
+                  <%= form_with model: [:admin, order_detail], local: true do |f| %>
+                    <%= f.select :making_status, OrderDetail.making_statuses.keys.map { |k| [OrderDetail.new(making_status: k).making_status_i18n, k] }, {}, { class: "form-control-sm mr-2" } %>
+                    <%= f.submit "更新", class: "btn btn-success btn-sm" %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <div class="col-md-3">
+          <table class="table billing-table">
+            <tr>
+              <th>商品合計</th>
+              <td><%= number_with_delimiter(@order.order_details.sum { |detail| detail.price * detail.amount }) %>円</td>
+            </tr>
+            <tr>
+              <th>送料</th>
+              <td><%= number_with_delimiter(@order.shipping_cost) %>円</td>
+            </tr>
+            <tr>
+              <th><strong>請求金額合計</strong></th>
+              <td><strong><%= number_with_delimiter(@order.order_details.sum { |detail| detail.price * detail.amount } + @order.shipping_cost) %>円</strong></td>
+            </tr>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </div>
