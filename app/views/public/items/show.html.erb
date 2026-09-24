@@ -19,3 +19,12 @@
   <p>商品説明：<%= @item.introduction %></p>
   <p>価格：<%= @item.with_tax_price %>円（税込）</p>
 </div>
+
+<%= form_with model: CartItem.new, url: cart_items_path, local: true do |f| %>
+  <%= f.hidden_field :item_id, value: @item.id %>
+
+  <div>
+    <%= f.select :amount, (1..10).to_a, prompt: "個数選択" %>
+    <%= f.submit "カートに入れる" %>
+  </div>
+<% end %>
