@@ -8,12 +8,9 @@ class Public::CartItemsController < ApplicationController
   end
 
   def create
-    item_id = cart_item_params[:item_id]
-    amount_to_add = cart_item_params[:amount].to_i
-    @cart_item.amount = (@cart_item.amount || 0) + amount_to_add
-    @cart_item = current_customer.cart_items.find_by(item_id: params[:cart_item][:item_id])
+    @cart_item = current_customer.cart_items.find_by(item_id: cart_item_params[:item_id])
     if @cart_item.present?
-      new_amount = @cart_item.amount + amount.to_add
+      new_amount = @cart_item.amount + cart_item_params[:amount].to_i
       @cart_item.update(amount: new_amount)
     else
       @cart_item = current_customer.cart_items.new(cart_item_params)
@@ -43,6 +40,6 @@ class Public::CartItemsController < ApplicationController
   private
 
   def cart_item_params
-    params.require(:item).permit(:amount)
+    params.require(:cart_item).permit(:item_id, :amount)
   end
 end
