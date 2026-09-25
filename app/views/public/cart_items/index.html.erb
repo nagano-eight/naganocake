@@ -121,7 +121,7 @@
                         <td style="width: 100px;">                            
                             <%= form_with model: cart_item, url: cart_item_path(cart_item), method: :patch, local: true do |f| %>
                                 <div class="d-flex align-items-center gap-2">
-                                    <%= f.select :amount, options_for_select((1..10).to_a, cart_item.amount) %>
+                                    <%= f.text_field :amount, style: "width: 50px;" %>
                                     <%= f.submit "変更", class: "custom-btn btn-sm btn-green" %>
                                 </div>
                             <% end %>
