@@ -17,7 +17,9 @@ class Admin::OrdersController < ApplicationController
     end
 
     if @order.save
-      flash[:notice] = "注文ステータスを更新しました。"
+      if @order.payment_confirmation?
+        @order.order_details.update_all(making_status: :waiting_for_production)
+      end
       redirect_to admin_order_path(@order)
     else
       render :show
