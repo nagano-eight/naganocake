@@ -69,7 +69,6 @@
 </style>
 
 <div class="orders-container">
-    <% end %>
     <%= form_with model: @order, url: confirm_orders_path, method: :post, data: { turbo: false } do |f| %>
 
         <h3 class="order-input">注文情報入力</h3>
