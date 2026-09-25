@@ -1,11 +1,47 @@
 <style>
     .orders-container {
         max-width: 1100px;
-        margin: 0 auto;
+        margin: 40px auto;
         padding: 20px 40px;
     }
     h3 {
+        margin-left: 150px;
         background-color: transparent;
+    }
+    .select-payment {
+        margin-left: 50px;
+    }
+    .select-address {
+        margin-left: 50px;
+        margin-bottom: 10px;
+    }
+    .address {
+        margin-left: 18px;
+    }
+    .name {
+        margin-left: 38px;
+    }
+    .select-address select.custom-select {
+        padding: 5px;
+    }
+    .address-field {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+    .address-field label {
+        width: 180px;
+        text-align: left;
+        margin-right: 15px;
+        font-weight: bold;
+    }
+    .address-field input[type="text"] {
+        padding: 5px;
+        border:1px solid #ccc;
+        border-radius: 4px;
+    }
+    .address-field input.address-input {
+        width: 600px;
     }
     .order-input { 
         display: inline-block;
@@ -19,42 +55,76 @@
     .custom-btn {
         background-color: transparent;
         background: none !important;
+        padding: 12px 0;
+        width: 200px;
+        display: inline-block;
+        border-radius: 4px;
         color: #ffffff !important;
         font-weight: bold;
         cursor: pointer;
+        border: none;
+        font-size: 16px;
     }
     .btn-blue { background-color: #007bff !important; }
 </style>
 
 <div class="orders-container">
-    <% form_with model: @order, url: confirm_orders_path, method: :post do |f| %>
+    <% if @order.errors.any? %>
+        <div id="error_explanation" class="alert alert-danger">
+            <ul>
+                <% @order.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                <% end %>
+            </ul>
+        </div>
+    <% end %>
+    <%= form_with model: @order, url: confirm_orders_path, method: :post, data: { turbo: false } do |f| %>
 
         <h3 class="order-input">注文情報入力</h3>
 
         <h4>支払方法</h4>
-        <div>
+        <div class="select-payment">
             <%= f.radio_button :payment_method, Order.payment_methods.key(0) %>
             <%= f.label :payment_method_credit_card, Order.payment_methods_i18n[:credit_card] %><br>
             <%= f.radio_button :payment_method, Order.payment_methods.key(1) %>
-            <%= f.label :payment_method_transfer, Order.payment_methods_i18n[:transrer] %>
+            <%= f.label :payment_method_transfer, Order.payment_methods_i18n[:transfer] %>
         </div>
 
         <h4>お届け先</h4>
         <div>
-            <%= f.radio_button :select_address, 0, checked: true %>
-            <%= f.label :select_address, "ご自身の住所" %><br>
-            〒<%= @ %>
-            <%= f.radio_button :select_address, 1 %>
-            <%= f.label :select, "登録先住所から選択" %><br>
-            <%= f.select :address, options_for_select(Address.all, :id, :address_display) %><br>
-            <%= f.radio_button :select_address, 2 %>
-            <%= f.label :select_address_2, "新しいお届け先" %><br>
-            <%= f.label :postal_code, "郵便番号(ハイフンなし)" %>
-            <%= f.text_field :postal_code %><br>
-            <%= f.label :address, "住所" %>
-            <%= f.text_field :address, maxlength: 72, class: "form-control" %><br>
-            <%= f.label :name, "宛名" %>
-            <%= f.text_field :name %>
+            <div class="select-address">
+                <%= f.radio_button :select_address, "0", checked: true %>
+                <%= f.label :select_address_0, "ご自身の住所" %><br>
+                <div class="address">
+                    〒 <%= current_customer.postal_code %> <%= current_customer.address %><br>
+                </div>
+                <div class="name"><%= current_customer.last_name %><%= current_customer.first_name %></div>
+            </div>
+            <div class="select-address">
+                <%= f.radio_button :select_address, "1" %>
+                <%= f.label :select, "登録先住所から選択" %><br>
+                <div class="address">
+                    <%= f.select :address_id, options_from_collection_for_select(@addresses, :id, :address_display), {}, { class: "custom-select w-100" } %>
+                </div>
+            </div>
+            <div class="select-address">
+                <%= f.radio_button :select_address, "2" %>
+                <%= f.label :select_address_2, "新しいお届け先" %><br>
+                <div class="address">
+                    <div class="address-field">
+                        <%= f.label :postal_code, "郵便番号(ハイフンなし)" %>
+                        <%= f.text_field :postal_code %><br>
+                    </div>
+                    <div class="address-field">
+                        <%= f.label :address, "住所" %>
+                        <%= f.text_field :address, class: "address-input form-control" %><br>
+                    </div>
+                    <div class="address-field">
+                        <%= f.label :name, "宛名" %>
+                        <%= f.text_field :name %>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="action-area">
             <%= f.submit "確認画面に進む", class: "custom-btn btn-blue" %>

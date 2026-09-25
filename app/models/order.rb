@@ -1,4 +1,6 @@
 class Order < ApplicationRecord
+  attr_accessor :select_address, :address_id
+
   belongs_to :customer
 
   validates :postal_code, :address, :name, :shipping_cost, :total_payment, :payment_method, :status, presence: true
