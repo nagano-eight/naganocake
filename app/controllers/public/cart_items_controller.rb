@@ -4,6 +4,10 @@ class Public::CartItemsController < ApplicationController
   def index
     @cart_items = CartItem.all
     @total_price = @cart_items.sum(&:subtotal)
+    @total_payment = 0
+    @cart_items.each do |cart_item|
+      @total_payment += cart_item.subtotal
+    end
   end
 
   def create
@@ -11,11 +15,16 @@ class Public::CartItemsController < ApplicationController
     if @cart_item.present?
       new_amount = @cart_item.amount + cart_item_params[:amount].to_i
       @cart_item.update(amount: new_amount)
+      redirect_to cart_items_path
     else
       @cart_item = current_customer.cart_items.new(cart_item_params)
-      @cart_item.save
+      if @cart_item.save
+        redirect_to cart_items_path
+      else
+        @item = Item.find(cart_item_params[:item_id])
+        render "public/items/show"
+      end
     end
-    redirect_to cart_items_path
   end
 
   def update
@@ -23,6 +32,11 @@ class Public::CartItemsController < ApplicationController
     if @cart_item.update(cart_item_params)
       redirect_to cart_items_path
     else
+      @cart_items = current_customer.cart_items
+      @total_payment = 0
+      @cart_items.each do |cart_item|
+        @total_payment += cart_item.subtotal
+      end
       render :index
     end
   end

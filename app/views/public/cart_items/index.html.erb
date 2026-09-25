@@ -37,6 +37,7 @@
         font-weight: bold;
         padding: 5px 10px;
         cursor: pointer;
+        text-decoration: none;
     }
     .btn-red {
         background-color: #df4759 !important;
@@ -83,7 +84,8 @@
         min-width: 200px;
     }
     .price-table th, .price-table td {
-        width: 20px;
+        padding: 5px 20px;
+        white-space: nowrap;
         border: 1px solid #aaaaaa !important;
     }
     .price-table th {
@@ -116,14 +118,16 @@
                     <tr>
                         <td><%= cart_item.item.name %></td>
                         <td style="with: 100px;"><%= cart_item.item.with_tax_price.to_fs(:delimited) if cart_item.item.present? %></td>
-                        <td style="width: 100px;">
-                            <% form_with model: cart_item, url: cart_item_path(cart_item), method: :path, local: true do |f| %>
-                                <%= f.select :amount, options_for_select((1..10).to_a, cart_item.amount) %>
-                                <%= f.submit "変更", class: "custom-btn btn-green" %>
+                        <td style="width: 100px;">                            
+                            <%= form_with model: cart_item, url: cart_item_path(cart_item), method: :patch, local: true do |f| %>
+                                <div class="d-flex align-items-center gap-2">
+                                    <%= f.select :amount, options_for_select((1..10).to_a, cart_item.amount) %>
+                                    <%= f.submit "変更", class: "custom-btn btn-sm btn-green" %>
+                                </div>
                             <% end %>
                         </td>
                         <td style="width: 100px;"><%= number_with_delimiter(cart_item.subtotal) if cart_item.respond_to?(:subtotal) %></td>
-                        <td style="width: 100px;"><%= button_to "削除する", cart_item_path(cart_item), data: { turbo_method: :delete }, class: "custom-btn btn-red btn-sm" %></td>
+                        <td style="width: 100px;"><%= link_to "削除する", cart_item_path(cart_item), data: { turbo_method: :delete }, class: "custom-btn btn-red btn-sm" %></td>
                     </tr>
                 <% end %>
             </tbody>
@@ -132,7 +136,7 @@
 
     <div class="cart-footer">
         <div class="shopping-to">
-            <%= button_to "買い物を続ける", root_path, class: "custom-btn btn-blue" %>
+            <%= link_to "買い物を続ける", root_path, class: "custom-btn btn-blue" %>
         </div>
         <div class="price-table">
             <table class="price-table">
@@ -148,6 +152,8 @@
         </div>
     </div>
     <div class="action-area">
-        <%= button_to "情報入力に進む", orders_path, class: "custom-btn btn-green" %>
+        <% if @cart_items.present? %>
+            <%= link_to "情報入力に進む", new_order_path, class: "custom-btn btn-green" %>
+        <% end %>
     </div>
 </div>

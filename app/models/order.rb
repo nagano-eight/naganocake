@@ -1,4 +1,6 @@
 class Order < ApplicationRecord
+  attr_accessor :select_address, :address_id
+
   belongs_to :customer
 
   validates :postal_code, :address, :name, :shipping_cost, :total_payment, :payment_method, :status, presence: true
@@ -17,5 +19,9 @@ class Order < ApplicationRecord
     when "preparing_to_ship" then "発送準備中"
     when "shipped" then "発送済み"
     end
+  end
+
+  def subtotal
+    order_details.sum { |detail| detail.price * detail.amount }
   end
 end
