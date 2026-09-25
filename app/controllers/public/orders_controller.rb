@@ -1,6 +1,5 @@
 class Public::OrdersController < ApplicationController
-  
-  before_action :authenticate_customer! 
+  before_action :authenticate_customer!
 
   def new
     @order = Order.new
@@ -8,7 +7,7 @@ class Public::OrdersController < ApplicationController
   end
 
   def index
-    @orders = Order.all  
+    @orders = Order.all
   end
 
  def confirm
@@ -33,7 +32,7 @@ class Public::OrdersController < ApplicationController
    when "2"
      @order.postal_code = params[:order][:postal_code]
      @order.address = params[:order][:address]
-     @order.name = params[:order][:name]      
+     @order.name = params[:order][:name]
    end
    if @order.invalid?
      @addresses = current_customer.addresses
@@ -73,7 +72,7 @@ class Public::OrdersController < ApplicationController
 
   def order_params
     params.require(:order).permit(
-      :payment_method,      
+      :payment_method,
       :postal_code,
       :address,
       :name,
