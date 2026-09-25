@@ -1,13 +1,12 @@
 class Public::OrdersController < ApplicationController
-  
-  before_action :authenticate_customer! 
+  before_action :authenticate_customer!
 
   def new
     @order = Order.new
   end
 
   def index
-    @orders = Order.all  
+    @orders = Order.all
   end
 
  def confirm
@@ -16,7 +15,7 @@ class Public::OrdersController < ApplicationController
     @cart_items = current_customer.cart_items
     @total_payment = @cart_items.sum(&:subtotal)
     @order.payment_method = order_params[:payment_method]
-    case params[:order][:address_option] 
+    case params[:order][:address_option]
     when "0"
       @order.postal_code = current_customer.postal_code
       @order.address = current_customer.address
