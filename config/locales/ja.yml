@@ -1,5 +1,5 @@
 ja:
-   enums:
+  enums:
     order:
       payment_method:
         credit_card: "クレジットカード"
@@ -10,3 +10,4 @@ ja:
         in_production: "製作中"
         preparing_to_ship: "発送準備中"
         shipped: "発送済み"
+
