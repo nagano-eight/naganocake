@@ -16,4 +16,8 @@ class OrderDetail < ApplicationRecord
     when "production_complete" then "製作完了"
     end
   end
+
+  def subtotal
+    price.to_i * amount.to_i
+  end
 end

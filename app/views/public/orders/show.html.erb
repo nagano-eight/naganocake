@@ -1,87 +1,77 @@
-<style>
-    h3 {
-        display: inline;
-        background-color: #ededed;
-        padding: 0 20px;
-    }
-    table {
-        border-collapse: collapse;
-    }
-    th, td {
-        border: 1px solid #ccc;
-        padding: 12px;
-        text-align: left;
-    }
-    th {
-        background-color: #ededed;
-    }
-</style>
-<div class="container mt-4">
-    <h3>注文履歴詳細</h3>
-    <div class="row mb-5">
+<div class="container my-5">
+    <div class="row mb-4">
+        <div class="col-12 offset-md-1">
+            <h3 class="mb-4 bg-light text-center py-2" style="width: 200px; font-weight: bold; ">注文履歴詳細</h3>
+        </div>
+    </div>
+    <div class="row mb-4">
         <div class="col-md-7">
             <h4>注文情報</h4>
-            <table>
-                <tr>
-                    <th>注文日</th>
-                    <td><%= @order.created_at %></td>
-                </tr>
-                <tr>
-                    <th>配達先</th>
-                    <td>
-                        〒<%= @order.postal_code %>
-                        <%= @order.address %>
-                        <%= @order.name %>
-                    </td>
-                </tr>
-                <tr>
-                    <th>支払方法</th>
-                    <td><%= @order.payment_method %></td>
-                </tr>
-                <tr>
-                    <th>ステータス</th>
-                    <td><%= @order.status %></td>
-                </tr>
+            <table class="table table-bordered mb-0" style="border: 1px solid #000000;">
+                <tbody>
+                    <tr>
+                        <th style="background-color: #ededed;">注文日</th>
+                        <td><%= @order.created_at %></td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: #ededed;">配達先</th>
+                        <td>
+                            〒<%= @order.postal_code %>
+                            <%= @order.address %>
+                            <%= @order.name %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: #ededed;">支払方法</th>
+                        <td><%= @order.payment_method_i18n %></td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: #ededed;">ステータス</th>
+                        <td><%= @order.status_i18n %></td>
+                    </tr>
+                </tbody>
             </table>
-        </div>
-        <div class="col-md-5">
+        </div>        
+        <div class="col-md-4 offset-md-1">
             <h4>請求情報</h4>
-            <table>
-                <tr>
-                    <th>商品合計</th>
-                    <td><%= @order.subtotal.to_fs(:delimited) %></td>
-                </tr>
-                <tr>
-                    <th>配送料</th>
-                    <td><%= @order.shipping_cost %></td>
-                </tr>
-                <tr>
-                    <th>ご請求額</th>
-                    <td><%= @order.tatal_payment.to_fs(:delimited) %></td>
-                </tr>
+            <table class="table table-bordered mb-0" style="border: 1px solid #000000;">
+                <tbody>
+                    <tr>
+                        <th style="background-color: #ededed;">商品合計</th>
+                        <td><%= @order.subtotal.to_fs(:delimited) %></td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: #ededed;">配送料</th>
+                        <td><%= @order.shipping_cost %></td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: #ededed;">ご請求額</th>
+                        <td><%= @order.total_payment.to_fs(:delimited) %></td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12">
-            <table>
+    <div class="row mt-5">
+        <div class="col-md-9">
+            <table class="table table-bordered" style="border: 1px solid #000000;">
                 <thead>
                     <tr>
-                        <th>商品</th>
-                        <th>単価(税込)</th>
-                        <th>個数</th>
-                        <th>小計</th>
+                        <th style="background-color: #ededed;">商品</th>
+                        <th style="background-color: #ededed;">単価(税込)</th>
+                        <th style="background-color: #ededed;">個数</th>
+                        <th style="background-color: #ededed;">小計</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <% @orders.each do |order| %>
-                            <td><%= order.item %></td>
-                            <td><%= order.price.to_fs(:delimited) %></td>
-                            <td><%= order.amount %></td>
-                            <td><%= order.subtotal.to_fs(:delimited) %></td>
-                        <% end %>
-                    </tr>
+                    <% @order_details.each do |order_detail| %>
+                        <tr>
+                            <td><%= order_detail.item.name %></td>
+                            <td><%= order_detail.price.to_fs(:delimited) %></td>
+                            <td><%= order_detail.amount %></td>
+                            <td><%= order_detail.subtotal.to_fs(:delimited) %></td>
+                        </tr>
+                    <% end %>
                 </tbody>
             </table>
         </div>
