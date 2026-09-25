@@ -17,12 +17,12 @@ class Public::CartItemsController < ApplicationController
       @cart_item.update(amount: new_amount)
       redirect_to cart_items_path
     else
-      @cart_item = current_customer.cart_items.new(cart_item_params)    
+      @cart_item = current_customer.cart_items.new(cart_item_params)
       if @cart_item.save
         redirect_to cart_items_path
       else
         @item = Item.find(cart_item_params[:item_id])
-        render 'public/items/show'
+        render "public/items/show"
       end
     end
     redirect_to cart_items_path
