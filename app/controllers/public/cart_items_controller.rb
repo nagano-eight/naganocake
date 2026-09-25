@@ -25,7 +25,6 @@ class Public::CartItemsController < ApplicationController
         render "public/items/show"
       end
     end
-    redirect_to cart_items_path
   end
 
   def update
