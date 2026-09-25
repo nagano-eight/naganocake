@@ -84,9 +84,11 @@
         min-width: 200px;
     }
     .price-table th, .price-table td {
-        padding: 5px 20px;
+        width: 80px;
+        height: 50px;
+        padding-left: 8px;       
         white-space: nowrap;
-        border: 1px solid #aaaaaa !important;
+        border: 1px solid #aaaaaa !important;        
     }
     .price-table th {
         background-color: #ededed;
@@ -144,7 +146,7 @@
                     <tr>
                         <th>合計金額</th>
                         <td>
-                            <p><%= number_with_delimiter(@total_payment) %></p>
+                            <%= number_with_delimiter(@total_payment) %>
                         </td>
                     </tr>
                 </tbody>
