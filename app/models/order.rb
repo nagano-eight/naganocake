@@ -20,4 +20,8 @@ class Order < ApplicationRecord
     when "shipped" then "発送済み"
     end
   end
+
+  def subtotal
+    order_details.sum { |detail| detail.price * detail.amount }
+  end
 end

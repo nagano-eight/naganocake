@@ -69,15 +69,6 @@
 </style>
 
 <div class="orders-container">
-    <% if @order.errors.any? %>
-        <div id="error_explanation" class="alert alert-danger">
-            <ul>
-                <% @order.errors.full_messages.each do |message| %>
-                    <li><%= message %></li>
-                <% end %>
-            </ul>
-        </div>
-    <% end %>
     <%= form_with model: @order, url: confirm_orders_path, method: :post, data: { turbo: false } do |f| %>
 
         <h3 class="order-input">注文情報入力</h3>
