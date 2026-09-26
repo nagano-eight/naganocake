@@ -27,7 +27,7 @@
               <td>
                 <%= link_to item.name, admin_item_path(item) %>
               </td>
-              <td><%= number_with_delimiter(item.price) %>円</td>
+              <td><%= number_with_delimiter(item.price) %></td>
               <td><%= item.genre.name %></td>
               <td>
                 <% if item.is_active? %>
