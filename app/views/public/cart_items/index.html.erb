@@ -4,14 +4,6 @@
         margin: 0 auto;
         padding: 20px 40px;
     }
-    .cart-title {
-        display: inline-block;
-        background-color: #ededed;
-        margin-left: 10px;
-        margin-bottom: 20px;
-        padding: 0 20px;
-        font-size: 20px;
-    }
     .clear-cart-area {
         display: flex;
         justify-content: flex-end;
@@ -53,12 +45,6 @@
         padding: 10px 24px;
     }
     .btn-sm { padding: 4px 10px; font-size: 12px; }
-    .cart-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
     .cart-table th, .cart-table td {
         border: 1px solid #aaaaaa !important;
         padding: 12px;
@@ -99,12 +85,15 @@
         margin-bottom: 60px;
     }
 </style>
-<div class="cart-container">
-    <h3 class="cart-title">ショッピングカート</h3>
-    <div class="clear-cart-area">
-        <%= button_to "カートを空にする", destroy_all_cart_items_path, method: :delete, data: { confirm: "本当に削除しますか？" }, class: "custom-btn btn-red" %>
+<div class="container">
+    <div class="row mb-4 mt-5">
+        <div class="col-12 offset md-1 d-flex justify-content-between align-items-center">            
+            <h3 class="mb-0 bg-light text-center py-2" style="font-weight: bold; font-size: 24px; padding: 0 20px">ショッピングカート</h3>
+            <%= button_to "カートを空にする", destroy_all_cart_items_path, method: :delete, data: { confirm: "本当に削除しますか？" }, class: "custom-btn btn-red",
+             style: "font-size: 16px; padding: 7px 18px;" %>
+        </div>
     </div>
-    <div>
+    <div class="row mb-4">
         <table class="cart-table">
             <thead>
                 <tr>
@@ -145,7 +134,7 @@
                 <tbody>
                     <tr>
                         <th>合計金額</th>
-                        <td>
+                        <td style="vertical-align: middle;">
                             <%= number_with_delimiter(@total_payment) %>
                         </td>
                     </tr>

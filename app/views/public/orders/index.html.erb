@@ -1,47 +1,21 @@
-<style>
-    .orders-index-container {
-        max-width: 1100px;
-        margin: 30px auto;
-    }
-    h3 {
-        display: inline;
-        margin-left: 150px;
-        padding: 0 20px;
-        background-color: #ededed;
-    }
-    .index-table {
-        margin: 30px auto;
-        width: 100%;
-    }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    th, td {
-        border: 1px solid #ccc;
-        padding: 12px;
-        text-align: left;
-    }
-    th {
-        background-color: #ededed;
-    }
-    .btn {
-        color: #ffffff;
-        padding: 5px 10px;
-    }
-</style>
-<div class="orders-index-container">
-    <h3>注文履歴一覧</h3>
-    <div class="index-table">
-        <table>
+<div class="container my-5">
+    <div class="row mb-4 mt-5">
+        <div class="col-12 offset md-1"></div>
+            <h3 class="mb-4 bg-light text-center py-2" style="width: 200px; font-weight: bold; padding: 0">注文履歴一覧</h3>
+    </div>
+    <div class="row mb-4">
+        <table class="table table-bordered mb-0" style="border: 1px solid #000000">
+            <style>
+                .table th { padding: 15px 5px; !important; :vertical-align: middle; }
+            </style>
             <thead>
                 <tr>
-                    <th>注文日</th>
-                    <th>配送先</th>
-                    <th>注文商品</th>
-                    <th>支払金額</th>
-                    <th>ステータス</th>
-                    <th>注文詳細</th>
+                    <th style="width: 15%; background-color: #ededed;">注文日</th>
+                    <th style="background-color: #ededed;">配送先</th>
+                    <th style="background-color: #ededed;">注文商品</th>
+                    <th style="background-color: #ededed;">支払金額</th>
+                    <th style="background-color: #ededed;">ステータス</th>
+                    <th style="background-color: #ededed;">注文詳細</th>
                 </tr>
             </thead>
             <tbody>
@@ -60,7 +34,7 @@
                         </td>
                         <td><%= number_with_delimiter(order.total_payment) %></td>
                         <td><%= order.status_i18n %></td>
-                        <td><%= link_to "表示する", order_path(order), class: "btn btn-info" %></td>
+                        <td style="width: 8%; white-space: nowrap; vertical-align: middle;"><%= link_to "表示する", order_path(order), class: "btn btn-info", style: "color: #ffffff !important;" %></td>
                     </tr>
                 <% end %>
             </tbody>
